@@ -54,7 +54,7 @@ START_KB = InlineKeyboardMarkup(
         [
             InlineKeyboardButton("🆘 Help", callback_data="help_cb"),
             InlineKeyboardButton(
-                "👨‍💻 Source Code", url="https://github.com/EL-Coders/mediafinder"
+                "🤖 𝖩𝗈𝗂𝗇 𝖴𝗉𝖽𝖺𝗍𝖾 𝖢𝗁𝖺𝗇𝗇𝖾𝗅 🤖", url="https://t.me/piroxbots"
             ),
         ]
     ]
