@@ -52,7 +52,7 @@ async def filter_(bot, message):
             await message.reply_text(
                 text="**Please join my Update Channel to use this Bot!**",
                 reply_markup=InlineKeyboardMarkup(
-                    [[InlineKeyboardButton("🤖 Join Channel", url=link)]]
+                    [[InlineKeyboardButton("📢 Join Channel 📢", url=link)]]
                 ),
                 parse_mode=ParseMode.MARKDOWN,
                 quote=True,
@@ -182,12 +182,12 @@ async def get_result(search, page_no, user_id, username):
         crnt_pg = index // 10 + 1
         tot_pg = (count + 10 - 1) // 10
         btn_count = 0
-        result = f"**Search Query:** `{search}`\n**Total Results:** `{count}`\n**Page:** `{crnt_pg}/{tot_pg}`\n**Precise Search: **`{precise_search}`\n**Result Mode:** `{search_md}`\n"
+        result = f"<u><b>🎊 𝖧𝖾𝗋𝖾 𝖨𝗌 𝖶𝗁𝖺𝗍 𝖨 𝖥𝗈𝗎𝗇𝖽 𝖥𝗈𝗋 𝖸𝗈𝗎𝗋 𝖰𝗎𝖾𝗋𝗒 🎊</b></u>"
         page = page_no
         for file in files:
             if button_mode == "ON":
                 file_id = file.file_id
-                filename = f"[{get_size(file.file_size)}]{file.file_name}"
+                filename = f"[{get_size(file.file_size)}]-{file.file_name}"
                 btn_kb = InlineKeyboardButton(
                     text=f"{filename}", callback_data=f"file {file_id}"
                 )

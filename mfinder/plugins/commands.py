@@ -42,7 +42,7 @@ async def start(bot, update):
         await get_files(bot, update)
 
 
-@Client.on_message(filters.command(["help"]))
+@Client.on_message(filters.command(["commands"]) & filters.user(ADMINS))
 async def help_m(bot, update):
     try:
         help_msg = HELP_MSG
