@@ -2,10 +2,9 @@ from pyrogram import Client, filters
 from mfinder import DB_CHANNELS, LOGGER
 from mfinder.db.files_sql import save_file
 from mfinder.utils.helpers import edit_caption
-from mfinder.plugins.start_cmd import START_INDEX_AFTER  # import the global variable
+from mfinder.plugins.commands import START_INDEX_AFTER  # import from commands.py
 
 media_filter = filters.document | filters.video | filters.audio
-
 
 @Client.on_message(filters.chat(DB_CHANNELS) & media_filter)
 async def live_index(bot, message):
@@ -17,7 +16,7 @@ async def live_index(bot, message):
         for file_type in ("document", "video", "audio"):
             media = getattr(message, file_type, None)
             if not media:
-                continue  # changed from break to continue to check other types
+                continue  # check other media types
 
             file_name = media.file_name
             file_name = edit_caption(file_name)
