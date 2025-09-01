@@ -12,7 +12,14 @@ from mfinder import LOGGER, ADMINS, START_MSG, HELP_MSG, START_KB, HELP_KB
 from mfinder.utils.util_support import humanbytes, get_db_size
 from mfinder.plugins.serve import get_files
 
+# -----------------------------
+# Skip message setting
+# -----------------------------
+START_INDEX_AFTER = 0  # default: start from first message
 
+# -----------------------------
+# /start command
+# -----------------------------
 @Client.on_message(filters.command(["start"]))
 async def start(bot, update):
     if len(update.command) == 1:
@@ -41,7 +48,9 @@ async def start(bot, update):
     elif len(update.command) == 2:
         await get_files(bot, update)
 
-
+# -----------------------------
+# /commands command
+# -----------------------------
 @Client.on_message(filters.command(["commands"]) & filters.user(ADMINS))
 async def help_m(bot, update):
     try:
@@ -57,7 +66,36 @@ async def help_m(bot, update):
         reply_markup=HELP_KB,
     )
 
+# -----------------------------
+# /setstart command (skip messages)
+# -----------------------------
+@Client.on_message(filters.command(["setstart"]) & filters.user(ADMINS))
+async def set_start_message(bot, message):
+    """
+    Reply to a message or provide its ID to set the starting message.
+    All messages before this ID will be skipped during indexing.
+    """
+    global START_INDEX_AFTER
 
+    if message.reply_to_message:
+        START_INDEX_AFTER = message.reply_to_message.message_id
+    elif len(message.command) > 1:
+        try:
+            START_INDEX_AFTER = int(message.command[1])
+        except ValueError:
+            return await message.reply("❌ Invalid message ID.")
+    else:
+        return await message.reply(
+            "❌ Reply to a message or provide its ID to set start point."
+        )
+
+    await message.reply(
+        f"✅ Indexing will start after message ID: {START_INDEX_AFTER}"
+    )
+
+# -----------------------------
+# Callback queries
+# -----------------------------
 @Client.on_callback_query(filters.regex(r"^back_m$"))
 async def back(bot, query):
     user_id = query.from_user.id
@@ -79,7 +117,9 @@ async def help_cb(bot, query):
         help_msg = HELPMSG
     await query.message.edit_text(help_msg, reply_markup=HELP_KB)
 
-
+# -----------------------------
+# Admin commands
+# -----------------------------
 @Client.on_message(filters.command(["restart"]) & filters.user(ADMINS))
 async def restart(bot, update):
     LOGGER.warning("Restarting bot using /restart command")
