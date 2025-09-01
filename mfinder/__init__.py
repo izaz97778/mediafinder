@@ -4,7 +4,7 @@ import logging
 import logging.config
 
 
-id_pattern = re.compile(r"^.\d+$")
+id_pattern = re.compile(r"^-?\d+$")
 
 # vars
 APP_ID = os.environ.get("APP_ID", "")
@@ -36,5 +36,6 @@ HELP_KB = const.HELP_KB
 logging.config.fileConfig(fname="config.ini", disable_existing_loggers=False)
 LOGGER = logging.getLogger(__name__)
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
+
 
 
