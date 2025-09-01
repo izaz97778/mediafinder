@@ -2,7 +2,6 @@ import os
 import re
 import logging
 import logging.config
-from dotenv import load_dotenv
 
 
 load_dotenv()
@@ -15,7 +14,7 @@ APP_ID = os.environ.get("APP_ID", "")
 API_HASH = os.environ.get("API_HASH", "")
 BOT_TOKEN = os.environ.get("BOT_TOKEN", "")
 DB_URL = os.environ.get("DB_URL", "")
-OWNER_ID = int(os.environ.get("OWNER_ID", ""))
+OWNER_ID = int(os.environ.get("OWNER_ID", "0"))
 ADMINS = [
     int(user) if id_pattern.search(user) else user
     for user in os.environ.get("ADMINS", "").split()
@@ -40,3 +39,4 @@ HELP_KB = const.HELP_KB
 logging.config.fileConfig(fname="config.ini", disable_existing_loggers=False)
 LOGGER = logging.getLogger(__name__)
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
+
