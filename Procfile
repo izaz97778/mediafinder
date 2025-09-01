@@ -1,1 +1,1 @@
-worker: python3 -m mfinder
+worker: bash start.sh
