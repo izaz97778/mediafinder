@@ -1,10 +1,25 @@
 import uvloop
+import asyncio
 from pyrogram import Client, idle, __version__
 from pyrogram.raw.all import layer
 from mfinder import APP_ID, API_HASH, BOT_TOKEN
 
-uvloop.install()
+from flask import Flask
+import threading
 
+# ---------------- Flask Health Server ---------------- #
+flask_app = Flask(__name__)
+
+@flask_app.route('/')
+def home():
+    return "MediaFinder Bot is running!", 200
+
+def run_flask():
+    flask_app.run(host="0.0.0.0", port=8080)
+
+# ----------------------------------------------------- #
+
+uvloop.install()
 
 async def main():
     plugins = dict(root="mfinder/plugins")
@@ -23,4 +38,9 @@ async def main():
         await idle()
         print(f"{me.first_name} - @{me.username} - Stopped !!!")
 
-uvloop.run(main())
+if __name__ == "__main__":
+    # Run Flask server in background thread
+    threading.Thread(target=run_flask).start()
+
+    # Run bot with uvloop
+    uvloop.run(main())
